@@ -29,6 +29,7 @@ ca cert.pem
 cert cert.pem
 dh dh.pem
 keepalive 10 60
+cipher AES-256-CBC
 persist-key
 persist-tun
 push "dhcp-option DNS 8.8.8.8"
@@ -52,6 +53,7 @@ client
 nobind
 dev tun
 redirect-gateway def1
+cipher AES-256-CBC
 
 <key>
 `cat key.pem`
