@@ -2,12 +2,14 @@
 
 **the original project - [jpetazzo/dockvpn](https://github.com/jpetazzo/dockvpn)** and it has its own [automatic build on dockerhub](https://hub.docker.com/r/jpetazzo/dockvpn/). 
 
+**forked project - [umputun/dockvpn](https://github.com/umputun/dockvpn)**, its [automatic build on dockerhub](https://hub.docker.com/r/umputun/dockvpn/). 
+
  
 Quick instructions:
 
 ```bash
-CID=$(docker run -d --privileged -p 1194:1194/udp -p 443:443/tcp umputun/dockvpn)
-docker run -t -i -p 8080:8080 --volumes-from $CID umputun/dockvpn serveconfig
+CID=$(docker run -d --privileged --name openvpn -p 1194:1194/udp udex/dockvpn)
+docker run -t -i -p 8080:8080 --volumes-from $CID udex/dockvpn serveconfig
 ```
 
 Now download the file located at the indicated URL. You will get a
@@ -38,16 +40,15 @@ use `docker start` to restart the service without touching the configuration.
 
 ## How does it work?
 
-When the `jpetazzo/openvpn` image is started, it generates:
+When the `udex/dockvpn` image is started, it generates:
 
 - Diffie-Hellman parameters,
 - a private key,
 - a self-certificate matching the private key,
-- two OpenVPN server configurations (for UDP and TCP),
+- two OpenVPN server configurations (UDP only),
 - an OpenVPN client profile.
 
-Then, it starts two OpenVPN server processes (one on 1194/udp, another
-on 443/tcp).
+Then, it starts two OpenVPN server processes  on 1194/udp.
 
 The configuration is located in `/etc/openvpn`, and the Dockerfile
 declares that directory as a volume. It means that you can start another
